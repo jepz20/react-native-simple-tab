@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StatusBar, StyleSheet } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation-tabs';
+import Constants from 'expo-constants';
 
 // Mock Screen should be replace by a real component
 const Home = () => (<Text>Home</Text>)
@@ -18,7 +19,7 @@ const tabObject = {
   Home: {
     screen: Home,
     navigationOptions: {
-      tabBarLabel: 'Home'
+      tabBarLabel: 'Home  '
     }
   },
   SecondScreen: {
@@ -83,10 +84,29 @@ class App extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Stack />
+        {/* Add a component just for the background color we need */}
+        <View style={styles.statusBar} />
+        <View style={{ flex: 1 }}>
+          {/* Even though the status bar is being set expo doesn't respect the backgroud color */}
+          {/* If we change the barstyle from light-content to dark-content we can see that the icons */}
+          {/* do change colors */}
+          <StatusBar
+            barStyle="light-content"
+            translucent={true}
+          />
+          <Stack />
+        </View>
       </View>
     );
   };
 };
+
+const styles = StyleSheet.create({
+  // add a style for the status  bar
+  statusBar: {
+    backgroundColor: "#00BCD4",
+    height: Constants.statusBarHeight,
+  },
+});
 
 export default App;
